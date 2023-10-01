@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo List</title>
+<style>
+  /* Your CSS styling here */
+</style>
+</head>
+<body>
+  <h1>Todo List</h1>
+  <input type="text" id="taskInput" placeholder="Enter a new task">
+  <select id="taskTag">
+    <option value="study">Study</option>
+    <option value="work">Work</option>
+    <option value="rest">Rest</option>
+    <option value="selfImprovement">Self-Improvement</option>
+  </select>
+  <button onclick="addTask()">Add Task</button>
+  <ul id="taskList" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
+
+  <audio id="audio">
+    <source src="AG-Cue55.mp3" type="audio/mpeg">
+    <source src="AS-Cue52.mp3" type="audio/mpeg">
+    <source src="AS-Cue53.mp3" type="audio/mpeg">
+    <source src="TT-Cue28.mp3" type="audio/mpeg">
+    <source src="TT-Cue34.mp3" type="audio/mpeg">
+    <source src="AR-Cue51.mp3" type="audio/mpeg">
+    <source src="AR-Cue512.mp3" type="audio/mpeg">
+    <source src="AR-Cue38.mp3" type="audio/mpeg">
+    <source src="AR-Cue59.mp3" type="audio/mpeg">
+    <source src="L1-Cue30.mp3" type="audio/mpeg">
+    <source src="L1-Cue302.mp3" type="audio/mpeg">
+    <source src="L1-Cue303.mp3" type="audio/mpeg">
+    <source src="L21.mp3" type="audio/mpeg">
+    <source src="L22.mp3" type="audio/mpeg">
+    <source src="L3-Cue28.mp3" type="audio/mpeg">
+    <source src="L41.mp3" type="audio/mpeg">
+    <source src="L42.mp3" type="audio/mpeg">
+    <source src="L0.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const taskList = document.getElementById("taskList");
+    const taskInput = document.getElementById("taskInput");
+    const taskTag = document.getElementById("taskTag");
+    const audio = document.getElementById("audio");
+
+    function StudyAudio() {
+      const audioFiles = ["AG-Cue55.mp3","AS-Cue52.mp3","AS-Cue53.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function RestAudio() {
+      const audioFiles = ["AR-Cue512.mp3","AR-Cue38.mp3","AR-Cue59.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function ToggleAudio() {
+      const audioFiles = ["TT-Cue28.mp3","TT-Cue34.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function EditAudio() {
+      const audioFiles = ["AR-Cue51.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function Last0() {
+      const audioFiles = ["L0.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function Last1() {
+      const audioFiles = ["L1-Cue30.mp3","L1-Cue302.mp3","L1-Cue303.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function Last2() {
+      const audioFiles = ["L21.mp3","L22.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function Last3() {
+      const audioFiles = ["L3-Cue28.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function Last4() {
+      const audioFiles = ["L41.mp3","L42.mp3"]; // Add your audio file names here
+      const randomIndex = Math.floor(Math.random() * audioFiles.length);
+      audio.src = audioFiles[randomIndex];
+      audio.play();
+    }
+
+    function updateRemainingTasks() {
+    remainingTasks = document.querySelectorAll("li:not(.completed)").length;
+    }
+
+    function addTask() {
+    const taskText = taskInput.value.trim();
+    const selectedTag = taskTag.value;
+    if (taskText !== "") {
+      const taskId = new Date().getTime().toString();
+      const li = document.createElement("li");
+      li.setAttribute("id", taskId);
+      li.setAttribute("draggable", true);
+
+      // 根据所选的标签调用不同的语音播放函数
+      if (selectedTag === "study") {
+        StudyAudio();
+      } else if (selectedTag === "rest") {
+        RestAudio();
+      } else if (selectedTag === "work") {
+        StudyAudio();
+      }
+
+      li.innerHTML = `
+        <input type="checkbox" onchange="toggleTask(this)">
+        <span>${taskText}</span>
+        <span class="tag">${selectedTag}</span>
+        <button onclick="editTask('${taskId}')">Edit</button>
+        <button onclick="deleteTask('${taskId}')">Delete</button>
+      `;
+      taskList.appendChild(li);
+      taskInput.value = "";
+      updateRemainingTasks();
+    }
+  }
+/*
+    function toggleTask(checkbox) {
+      const li = checkbox.parentNode;
+      li.classList.toggle("completed");
+      ToggleAudio();
+    }
+*/
+    function toggleTask(checkbox) {
+      const li = checkbox.parentNode;
+      li.classList.toggle("completed");
+      // 更新未完成任务数量
+      updateRemainingTasks();
+      // 如果剩余任务少于等于4个，根据标签播放语音
+      if (remainingTasks > 4) {
+        ToggleAudio();
+      } else if (remainingTasks == 4){
+        Last4();
+      } else if (remainingTasks == 3){
+        Last3();
+      } else if (remainingTasks == 2){
+        Last2();
+      } else if (remainingTasks == 1){
+        Last1();
+      }
+      else if (remainingTasks == 0){
+        Last0();
+      }
+    }
+
+    function editTask(taskId) {
+      const li = document.getElementById(taskId);
+      const taskTextSpan = li.querySelector("span");
+      const newText = prompt("Edit task:", taskTextSpan.textContent);
+      if (newText !== null) {
+        taskTextSpan.textContent = newText;
+        EditAudio();
+      }
+    }
+
+    function deleteTask(taskId) {
+      const li = document.getElementById(taskId);
+      li.parentNode.removeChild(li);
+      playRandomAudio();
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData("text");
+      const li = document.getElementById(taskId);
+      taskList.appendChild(li);
+      playRandomAudio();
+    }
+  </script>
+</body>
+</html>
