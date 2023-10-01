@@ -48,7 +48,7 @@
     const audio = document.getElementById("audio");
 
     function StudyAudio() {
-      const audioFiles = ["AG-Cue55.mp3","AS-Cue52.mp3","AS-Cue53.mp3"]; // Add your audio file names here
+      const audioFiles = ["/audio/AG-Cue55.mp3","AS-Cue52.mp3","AS-Cue53.mp3"]; // Add your audio file names here
       const randomIndex = Math.floor(Math.random() * audioFiles.length);
       audio.src = audioFiles[randomIndex];
       audio.play();
